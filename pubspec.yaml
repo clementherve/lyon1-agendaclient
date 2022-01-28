@@ -1,14 +1,18 @@
 name: lyon1agenda
-description: A simple command-line application.
+description: A package to fetch ics files from ADE Lyon 1
 version: 1.0.0
-# homepage: https://www.example.com
-
+publish_to: none
 environment:
   sdk: '>=2.15.1 <3.0.0'
 
 
-# dependencies:
-#   path: ^1.8.0
-
 dev_dependencies:
   lints: ^1.0.0
+  test: ^1.20.1
+dependencies: 
+  dartz: ^0.10.1
+  dio: ^4.0.4
+  icalendar_parser: ^1.0.1
+  dartus: 
+   git: https://github.com/clementherve/dartus-tomuss-client
+  dotenv: ^3.0.0
