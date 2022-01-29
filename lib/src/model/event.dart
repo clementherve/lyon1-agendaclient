@@ -17,7 +17,8 @@ class Event {
 
     _teacher = RegExp("\\n\\n.*?\\n([A-Z -])+\\n", multiLine: true)
             .firstMatch(_description)
-            ?.group(1) ??
+            ?.group(1)
+            ?.trim() ??
         "";
     _start = DateTime.parse(eventJSON['dtstart']['dt']);
     _end = DateTime.parse(eventJSON['dtend']['dt']);

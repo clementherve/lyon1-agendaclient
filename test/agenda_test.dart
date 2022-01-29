@@ -13,7 +13,7 @@ void main() async {
 
     for (final String link in icalLinks) {
       final Lyon1Agenda agendaClient = Lyon1Agenda();
-      final Option<Agenda> agendaOpt = await agendaClient.getAgenda(link);
+      final Option<Agenda> agendaOpt = await agendaClient.getAgenda(url: link);
 
       expect(agendaOpt.isSome(), equals(true));
 
@@ -28,6 +28,7 @@ void main() async {
         expect(event.description.contains("Exported"), equals(false));
         expect(event.name, isNot(isEmpty));
         expect(event.location, isNot(isEmpty));
+        // expect(event.teacher, isNot(isEmpty)); // ne passe pas
       }
     }
   });
