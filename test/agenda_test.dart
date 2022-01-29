@@ -5,10 +5,10 @@ import 'package:lyon1agenda/src/model/event.dart';
 import 'package:test/test.dart';
 
 void main() async {
-  test('getAgenda', () async {
+  test('getAgenda from URL', () async {
     final List<String> icalLinks = [
-      "http://adelb.univ-lyon1.fr/jsp/custom/modules/plannings/anonymous_cal.jsp?resources=46404&projectId=1&calType=ical&firstDate=2022-01-24&lastDate=2022-01-29",
-      "http://adelb.univ-lyon1.fr/jsp/custom/modules/plannings/anonymous_cal.jsp?resources=10069&projectId=1&calType=ical&firstDate=2022-01-24&lastDate=2022-01-29"
+      "https://adelb.univ-lyon1.fr/jsp/custom/modules/plannings/anonymous_cal.jsp?resources=46404&projectId=1&calType=ical&firstDate=2022-01-24&lastDate=2022-01-29",
+      "https://adelb.univ-lyon1.fr/jsp/custom/modules/plannings/anonymous_cal.jsp?resources=10069&projectId=1&calType=ical&firstDate=2022-01-24&lastDate=2022-01-29"
     ];
 
     for (final String link in icalLinks) {
@@ -28,7 +28,9 @@ void main() async {
         expect(event.description.contains("Exported"), equals(false));
         expect(event.name, isNot(isEmpty));
         expect(event.location, isNot(isEmpty));
-        // expect(event.teacher, isNot(isEmpty)); // ne passe pas
+
+        // TODO: investigate
+        // expect(event.teacher, isNot(isEmpty)); // does not pass
       }
     }
   });

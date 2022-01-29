@@ -13,8 +13,10 @@ class Lyon1Agenda {
 
   Lyon1Agenda() {
     _dio = Dio(BaseOptions(
-        connectTimeout: 3 * 1000,
-        headers: {'User-Agent': Constants.userAgent}));
+        connectTimeout: 10 * 1000,
+        headers: {'User-Agent': Constants.userAgent},
+        followRedirects: true,
+        maxRedirects: 5));
     _parser = AgendaParser();
   }
 
@@ -31,7 +33,18 @@ class Lyon1Agenda {
         (await _agendaURL?.getURL())?.getOrElse(() => "") ?? "";
     url = newURL.isEmpty ? url : newURL;
 
-    final Response response = await _dio.get(url);
+    url = url.replaceFirst("http:", "https:"); // force https
+
+    final Response response = await _dio.get(url,
+        options: Options(headers: {
+          'Accept':
+              'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+          'Accept-Language': 'en-US,en;q=0.5',
+          'Accept-Encoding': 'gzip, deflate, br',
+          'DNT': '1',
+          'Pragma': 'no-cache',
+          'Cache-Control': 'no-cache'
+        }));
     return ((response.statusCode ?? 400) >= 400)
         ? None()
         : await _parser.parseICS(response.data);

@@ -15,13 +15,22 @@ void main() async {
           "Check your .env file, username and/or password are empty");
     }
     _auth = Authentication(username, password);
-
-    expect(await _auth.authenticate(), equals(true));
+    final bool ok = await _auth.authenticate();
+    expect(ok, equals(true));
   });
 
   test('getURL', () async {
+    expect(_auth.isAuthenticated, equals(true));
+
     final AgendaURL agendaURL = AgendaURL(_auth);
     final Option<String> urlOpt = await agendaURL.getURL();
-    print("url: ${urlOpt.getOrElse(() => "")}");
+    final String url = urlOpt.toNullable() ?? "";
+    expect(url.isNotEmpty, equals(true));
+    expect(url.contains(RegExp("resources=[0-9,]+&")), equals(true));
+    expect(url.contains(RegExp("projectId=[0-9]+&")), equals(true));
+  });
+
+  tearDownAll(() async {
+    _auth.logout();
   });
 }
