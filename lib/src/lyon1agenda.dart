@@ -13,9 +13,9 @@ class Lyon1Agenda {
       followRedirects: true,
       maxRedirects: 5));
   late AgendaParser _parser = AgendaParser();
-  AgendaURL? _agendaURL;
+  late AgendaURL _agendaURL;
 
-  Lyon1Agenda() {
+  Lyon1Agenda(this._agendaURL) {
     // _dio = Dio(BaseOptions(
     // connectTimeout: 10 * 1000,
     // headers: {'User-Agent': Constants.userAgent},
@@ -32,9 +32,23 @@ class Lyon1Agenda {
     if (_agendaURL == null && url.isEmpty) {
       return None();
     }
+    String resources = "";
+    String projectid = "";
+    if (url.isNotEmpty) {
+      resources = url.substring(url.indexOf("resources="));
+      resources = resources.substring(0, resources.indexOf("&"));
+      projectid = url.substring(url.indexOf("projectId="));
+      projectid = projectid.substring(0, projectid.indexOf("&"));
+      // if (kDebugMode) {
+      print("resources: $resources");
+      print("projectid: $projectid");
+      // }
+    }
 
     final String newURL =
-        (await _agendaURL?.getURL())?.getOrElse(() => "") ?? "";
+        (await _agendaURL.getURL(projectid: projectid, resources: resources))
+                ?.getOrElse(() => "") ??
+            "";
     url = newURL.isEmpty ? url : newURL;
 
     url = url.replaceFirst("http:", "https:"); // force https
