@@ -7,17 +7,21 @@ import 'package:lyon1agenda/src/parser/agendaparser.dart';
 import 'package:lyon1agenda/src/utils/agenda_url.dart';
 
 class Lyon1Agenda {
-  late Dio _dio;
-  late AgendaParser _parser;
+  late Dio _dio = Dio(BaseOptions(
+      connectTimeout: 10 * 1000,
+      headers: {'User-Agent': Constants.userAgent},
+      followRedirects: true,
+      maxRedirects: 5));
+  late AgendaParser _parser = AgendaParser();
   AgendaURL? _agendaURL;
 
   Lyon1Agenda() {
-    _dio = Dio(BaseOptions(
-        connectTimeout: 10 * 1000,
-        headers: {'User-Agent': Constants.userAgent},
-        followRedirects: true,
-        maxRedirects: 5));
-    _parser = AgendaParser();
+    // _dio = Dio(BaseOptions(
+    // connectTimeout: 10 * 1000,
+    // headers: {'User-Agent': Constants.userAgent},
+    // followRedirects: true,
+    // maxRedirects: 5));
+    // _parser = AgendaParser();
   }
 
   Lyon1Agenda.useAuthentication(final Authentication authentication) {
