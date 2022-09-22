@@ -39,10 +39,6 @@ class Lyon1Agenda {
       resources = resources.substring(0, resources.indexOf("&"));
       projectid = url.substring(url.indexOf("projectId=") + 10);
       projectid = projectid.substring(0, projectid.indexOf("&"));
-      // if (kDebugMode) {
-      print("resources: $resources");
-      print("projectid: $projectid");
-      // }
     }
 
     final String newURL =
