@@ -104,8 +104,8 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "2d215ae485590cb4434354fbc3d82d666d7f63a6"
-      url: "https://github.com/clementherve/dartus-tomuss-client"
+      resolved-ref: "43b511b3c31e80e7de88a83dd1cae5b2421a5262"
+      url: "git@github.com:hatch01/dartus-tomuss-client.git"
     source: git
     version: "1.0.3"
   dartz:
