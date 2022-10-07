@@ -7,12 +7,12 @@ import 'package:lyon1agenda/src/parser/agendaparser.dart';
 import 'package:lyon1agenda/src/utils/agenda_url.dart';
 
 class Lyon1Agenda {
-  late Dio _dio = Dio(BaseOptions(
+  late final Dio _dio = Dio(BaseOptions(
       connectTimeout: 10 * 1000,
       headers: {'User-Agent': Constants.userAgent},
       followRedirects: true,
       maxRedirects: 5));
-  late AgendaParser _parser = AgendaParser();
+  late final AgendaParser _parser = AgendaParser();
   late AgendaURL _agendaURL;
 
   Lyon1Agenda(this._agendaURL) {
@@ -29,7 +29,7 @@ class Lyon1Agenda {
   }
 
   Future<Option<Agenda>> getAgenda({String url = ""}) async {
-    if (_agendaURL == null && url.isEmpty) {
+    if (url.isEmpty) {
       return None();
     }
     String resources = "";
@@ -43,8 +43,7 @@ class Lyon1Agenda {
 
     final String newURL =
         (await _agendaURL.getURL(projectid: projectid, resources: resources))
-                ?.getOrElse(() => "") ??
-            "";
+            .getOrElse(() => "");
     url = newURL.isEmpty ? url : newURL;
 
     url = url.replaceFirst("http:", "https:"); // force https
