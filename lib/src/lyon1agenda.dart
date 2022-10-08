@@ -7,17 +7,21 @@ import 'package:lyon1agenda/src/parser/agendaparser.dart';
 import 'package:lyon1agenda/src/utils/agenda_url.dart';
 
 class Lyon1Agenda {
-  late Dio _dio;
-  late AgendaParser _parser;
-  AgendaURL? _agendaURL;
+  late final Dio _dio = Dio(BaseOptions(
+      connectTimeout: 10 * 1000,
+      headers: {'User-Agent': Constants.userAgent},
+      followRedirects: true,
+      maxRedirects: 5));
+  late final AgendaParser _parser = AgendaParser();
+  late AgendaURL _agendaURL;
 
-  Lyon1Agenda() {
-    _dio = Dio(BaseOptions(
-        connectTimeout: 10 * 1000,
-        headers: {'User-Agent': Constants.userAgent},
-        followRedirects: true,
-        maxRedirects: 5));
-    _parser = AgendaParser();
+  Lyon1Agenda(this._agendaURL) {
+    // _dio = Dio(BaseOptions(
+    // connectTimeout: 10 * 1000,
+    // headers: {'User-Agent': Constants.userAgent},
+    // followRedirects: true,
+    // maxRedirects: 5));
+    // _parser = AgendaParser();
   }
 
   Lyon1Agenda.useAuthentication(final Authentication authentication) {
@@ -25,12 +29,21 @@ class Lyon1Agenda {
   }
 
   Future<Option<Agenda>> getAgenda({String url = ""}) async {
-    if (_agendaURL == null && url.isEmpty) {
+    if (url.isEmpty) {
       return None();
+    }
+    String resources = "";
+    String projectid = "";
+    if (url.isNotEmpty) {
+      resources = url.substring(url.indexOf("resources=") + 10);
+      resources = resources.substring(0, resources.indexOf("&"));
+      projectid = url.substring(url.indexOf("projectId=") + 10);
+      projectid = projectid.substring(0, projectid.indexOf("&"));
     }
 
     final String newURL =
-        (await _agendaURL?.getURL())?.getOrElse(() => "") ?? "";
+        (await _agendaURL.getURL(projectid: projectid, resources: resources))
+            .getOrElse(() => "");
     url = newURL.isEmpty ? url : newURL;
 
     url = url.replaceFirst("http:", "https:"); // force https

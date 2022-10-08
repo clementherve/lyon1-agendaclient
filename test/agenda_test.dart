@@ -1,7 +1,9 @@
+import 'package:dartus/tomuss.dart';
 import 'package:dartz/dartz.dart';
 import 'package:lyon1agenda/src/lyon1agenda.dart';
 import 'package:lyon1agenda/src/model/agenda.dart';
 import 'package:lyon1agenda/src/model/event.dart';
+import 'package:lyon1agenda/src/utils/agenda_url.dart';
 import 'package:test/test.dart';
 
 void main() async {
@@ -12,7 +14,8 @@ void main() async {
     ];
 
     for (final String link in icalLinks) {
-      final Lyon1Agenda agendaClient = Lyon1Agenda();
+      final Lyon1Agenda agendaClient =
+          Lyon1Agenda(AgendaURL(Authentication("", "")));
       final Option<Agenda> agendaOpt = await agendaClient.getAgenda(url: link);
 
       expect(agendaOpt.isSome(), equals(true));

@@ -7,12 +7,12 @@ environment:
 
 
 dev_dependencies:
-  lints: ^1.0.0
+  lints: ^2.0.0
   test: ^1.20.1
 dependencies: 
   dartz: ^0.10.1
   dio: ^4.0.4
   icalendar_parser: ^1.0.1
   dartus: 
-   git: https://github.com/clementherve/dartus-tomuss-client
-  dotenv: ^3.0.0
+   git: git@github.com:hatch01/dartus-tomuss-client.git
+  dotenv: ^4.0.1
