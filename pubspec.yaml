@@ -14,5 +14,5 @@ dependencies:
   dio: ^4.0.4
   icalendar_parser: ^1.0.1
   dartus: 
-   git: git@github.com:hatch01/dartus-tomuss-client.git
+   git: https://github.com/hatch01/dartus-tomuss-client.git
   dotenv: ^4.0.1
