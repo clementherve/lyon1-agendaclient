@@ -1,28 +1,18 @@
 import 'package:dartus/tomuss.dart';
 import 'package:dartz/dartz.dart';
-import 'package:dio/dio.dart';
 import 'package:lyon1agenda/src/constants/constants.dart';
 import 'package:lyon1agenda/src/model/agenda.dart';
 import 'package:lyon1agenda/src/parser/agendaparser.dart';
 import 'package:lyon1agenda/src/utils/agenda_url.dart';
+import 'package:requests/requests.dart';
+// ignore: depend_on_referenced_packages
+import 'package:http/http.dart';
 
 class Lyon1Agenda {
-  late final Dio _dio = Dio(BaseOptions(
-      connectTimeout: 10 * 1000,
-      headers: {'User-Agent': Constants.userAgent},
-      followRedirects: true,
-      maxRedirects: 5));
   late final AgendaParser _parser = AgendaParser();
   late AgendaURL _agendaURL;
 
-  Lyon1Agenda(this._agendaURL) {
-    // _dio = Dio(BaseOptions(
-    // connectTimeout: 10 * 1000,
-    // headers: {'User-Agent': Constants.userAgent},
-    // followRedirects: true,
-    // maxRedirects: 5));
-    // _parser = AgendaParser();
-  }
+  Lyon1Agenda(this._agendaURL);
 
   Lyon1Agenda.useAuthentication(final Authentication authentication) {
     _agendaURL = AgendaURL(authentication);
@@ -48,18 +38,20 @@ class Lyon1Agenda {
 
     url = url.replaceFirst("http:", "https:"); // force https
 
-    final Response response = await _dio.get(url,
-        options: Options(headers: {
+    final Response response = await Requests.get(url,
+        headers: {
+          'User-Agent': Constants.userAgent,
           'Accept':
-              'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+          'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
           'Accept-Language': 'en-US,en;q=0.5',
           'Accept-Encoding': 'gzip, deflate, br',
           'DNT': '1',
           'Pragma': 'no-cache',
           'Cache-Control': 'no-cache'
-        }));
-    return ((response.statusCode ?? 400) >= 400)
+        },
+    );
+    return ((response.statusCode) >= 400)
         ? None()
-        : await _parser.parseICS(response.data);
+        : await _parser.parseICS(response.body);
   }
 }
